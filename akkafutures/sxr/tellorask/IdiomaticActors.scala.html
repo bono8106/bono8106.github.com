@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>tellorask\IdiomaticActors.scala</title>
+        <script type="text/javascript" src="../jquery-all.js"></script>
+        <script type="text/javascript" src="../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> tellorask
+
+<span class="keyword">object</span> <a title="object tellorask.IdiomaticActors" id="9660">IdiomaticActors</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+
+  <span class="keyword">import</span> akka.actor.Actor
+  <span class="keyword">import</span> akka.actor.ActorRef
+  <span class="keyword">import</span> akka.actor.ActorSystem
+  <span class="keyword">import</span> akka.actor.Props
+
+  <span class="keyword">lazy</span> <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="26140">actorSystem</a> = <span title="(name: String)akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span title="java.lang.String(&quot;test&quot;)" class="string">&quot;test&quot;</span><span class="delimiter">)</span>
+
+  <span class="keyword">def</span> <a title="(name: String)akka.dispatch.MessageDispatcher" id="26141">newThreadDispatcher</a><span class="delimiter">(</span><a title="String" id="26189">name</a>: <span title="String">String</span><span class="delimiter">)</span> = <a href="#26139" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="=&gt; akka.dispatch.Dispatchers">dispatcherFactory</span>.
+    <span title="(name: String)akka.dispatch.ThreadPoolConfigDispatcherBuilder">newDispatcher</span><span class="delimiter">(</span><a href="#26189" title="String">name</a><span class="delimiter">)</span>.<span title="(size: Int)akka.dispatch.ThreadPoolConfigDispatcherBuilder">setCorePoolSize</span><span class="delimiter">(</span><span title="Int(1)" class="int">1</span><span class="delimiter">)</span>.<span title="(size: Int)akka.dispatch.ThreadPoolConfigDispatcherBuilder">setMaxPoolSize</span><span class="delimiter">(</span><span title="Int(1)" class="int">1</span><span class="delimiter">)</span>.<span title="=&gt; akka.dispatch.MessageDispatcher">build</span>
+
+  <span class="keyword">def</span> <a title="(f: =&gt; akka.actor.Actor, name: String)akka.actor.ActorRef" id="26142">namedThreadActorOf</a><span class="delimiter">(</span><a title="=&gt; akka.actor.Actor" id="26157">f</a>: =&gt; Actor, <a title="String" id="26158">name</a>: <span title="String">String</span><span class="delimiter">)</span> = 
+    <a href="#26139" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><a href="#26157" title="=&gt; akka.actor.Actor">f</a><span class="delimiter">)</span>.<span title="(d: akka.dispatch.MessageDispatcher)akka.actor.Props">withDispatcher</span><span class="delimiter">(</span><a href="#26141" title="(name: String)akka.dispatch.MessageDispatcher">newThreadDispatcher</a><span class="delimiter">(</span><a href="#26158" title="String">name</a><span class="delimiter">)</span><span class="delimiter">)</span><span class="delimiter">)</span>
+
+  <span class="keyword">def</span> <a title="(msg: String)Unit" id="26143">log</a><span class="delimiter">(</span><a title="String" id="26206">msg</a>: <span title="String">String</span><span class="delimiter">)</span> <span class="delimiter">{</span>
+    <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;[&quot;)" class="string">&quot;[&quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="object java.lang.Thread">Thread</span>.<span title="()java.lang.Thread">currentThread</span>.<span title="()java.lang.String">getName</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;] &quot;)" class="string">&quot;] &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26206" title="String">msg</a><span class="delimiter">)</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">class</span> <a title="class ServiceActor extends java.lang.Object with akka.actor.Actor with ScalaObject" id="26144">ServiceActor</a> <a href="#26144" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="26203">receive</a> = <a href="#26215" title="Unit" class="delimiter">{</a> <span class="keyword">case</span> <a title="Unit" id="26216">x</a>: <span title="Int">Int</span> =&gt;
+        <a href="#26143" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service processing &quot;)" class="string">&quot;Service processing &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26216" title="Int">x</a><span class="delimiter">)</span>
+        <a href="#26144" title="implicit akka.actor.package.actorRef2Scala : (ref: akka.actor.ActorRef)akka.actor.ScalaActorRef">sender</a> <a href="#26144" title="(message: Any)(implicit sender: akka.actor.ActorRef)Unit">!</a> <span class="delimiter">(</span><a href="#26216" title="Int">x</a> <span title="(x: Int)Int">*</span> <a href="#26216" title="Int">x</a><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">class</span> <a title="class ClientActor extends java.lang.Object with akka.actor.Actor with ScalaObject" id="26145">ClientActor</a> <a href="#26145" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="26205">receive</a> = <a href="#26230" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="26231">serviceProvider</a>: <span title="akka.actor.ActorRef">ActorRef</span> =&gt; <a href="#26231" title="implicit akka.actor.package.actorRef2Scala : (ref: akka.actor.ActorRef)akka.actor.ScalaActorRef">serviceProvider</a> <a href="#26145" title="(message: Any)(implicit sender: akka.actor.ActorRef)Unit">!</a> <span title="Int(42)" class="int">42</span>
+      <span class="keyword">case</span> <a title="Unit" id="26235">response</a>: <span title="Int">Int</span> =&gt; <a href="#26143" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got back &quot;)" class="string">&quot;Client got back &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26235" title="Int">response</a><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="26146">service</a> = <a href="#26142" title="(f: =&gt; akka.actor.Actor, name: String)akka.actor.ActorRef">namedThreadActorOf</a><span class="delimiter">(</span><span title="tellorask.IdiomaticActors.ServiceActor" class="keyword">new</span> <a href="#26144" title="tellorask.IdiomaticActors.ServiceActor">ServiceActor</a>, <span title="java.lang.String(&quot;service&quot;)" class="string">&quot;service&quot;</span><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="26148">client</a> = <a href="#26142" title="(f: =&gt; akka.actor.Actor, name: String)akka.actor.ActorRef">namedThreadActorOf</a><span class="delimiter">(</span><span title="tellorask.IdiomaticActors.ClientActor" class="keyword">new</span> <a href="#26145" title="tellorask.IdiomaticActors.ClientActor">ClientActor</a>, <span title="java.lang.String(&quot;client&quot;)" class="string">&quot;client&quot;</span><span class="delimiter">)</span>
+
+  <a href="#26148" title="akka.actor.ScalaActorRef" id="26239">client</a> <a href="#26239" title="akka.actor.ActorRef" id="26241">!</a> <a href="#26146" title="akka.actor.ActorRef" id="26240">service</a>
+
+<span class="delimiter">}</span>
+        </pre>
+    </body>
+</html>
