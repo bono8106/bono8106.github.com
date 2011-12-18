@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>untypedfutures\letitcrash\LetItCrashTest.scala</title>
+        <script type="text/javascript" src="../../jquery-all.js"></script>
+        <script type="text/javascript" src="../../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> untypedfutures.letitcrash
+
+<span class="keyword">import</span> akka.actor.Actor
+<span class="keyword">import</span> untypedfutures.<span class="delimiter">{</span>namedThreadActorOf, log<span class="delimiter">}</span>
+
+<span class="keyword">object</span> <a title="object untypedfutures.letitcrash.LetItCrashTest" id="9690">LetItCrashTest</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+
+  case <span class="keyword">class</span> <a title="class Request extends java.lang.Object with ScalaObject with Product with Serializable" id="26814">Request</a><a href="#26814" title="ScalaObject" class="delimiter">(</a><a title="Int" id="26802">i</a>: <span title="Int">Int</span><span class="delimiter">)</span>
+  case <span class="keyword">class</span> <a title="class Response extends java.lang.Object with ScalaObject with Product with Serializable" id="26810">Response</a><a href="#26810" title="ScalaObject" class="delimiter">(</a><a title="Int" id="26763">j</a>: <span title="Int">Int</span><span class="delimiter">)</span>
+  case <span class="keyword">object</span> <a href="#26746" title="object untypedfutures.letitcrash.LetItCrashTest.Fail" id="26751">Fail</a>
+
+  <span class="keyword">class</span> <a title="class Executive extends java.lang.Object with akka.actor.Actor with ScalaObject" id="26623">Executive</a> <a href="#26623" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="26753">receive</a> = <a href="#26759" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <span title="Unit">Request</span><span class="delimiter">(</span><a title="Int" id="26760">i</a><span class="delimiter">)</span> =&gt;
+        <a href="../package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;processing &quot;)" class="string">&quot;processing &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26760" title="Int">i</a><span class="delimiter">)</span>
+        <span title="object java.lang.Thread">Thread</span>.<span title="(x$1: Long)Unit">sleep</span><span class="delimiter">(</span><span title="Long(100L)" class="int">100</span><span class="delimiter">)</span> <span class="comment">// Do some work ..</span>
+        <a href="../package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;processed &quot;)" class="string">&quot;processed &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26760" title="Int">i</a><span class="delimiter">)</span>
+        <a href="#26623" title="=&gt; akka.actor.ScalaActorRef">self</a>.<span title="=&gt; akka.actor.UntypedChannel">channel</span> <a href="#26623" title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</a> <a href="#26810" title="(j: Int)untypedfutures.letitcrash.LetItCrashTest.Response">Response</a><span class="delimiter">(</span><a href="#26760" title="Int">i</a><span title="(x: Int)Int">*</span><a href="#26760" title="Int">i</a><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">class</span> <a title="class Director extends java.lang.Object with akka.actor.Actor with ScalaObject" id="26624">Director</a> <a href="#26624" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+
+    <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="26629">exec</a> = <a href="../package.scala.html#9713" title="(f: =&gt; akka.actor.Actor, name: String)akka.actor.ActorRef">namedThreadActorOf</a><span class="delimiter">(</span><span title="untypedfutures.letitcrash.LetItCrashTest.Executive" class="keyword">new</span> <a href="#26623" title="untypedfutures.letitcrash.LetItCrashTest.Executive">Executive</a>, <span title="java.lang.String(&quot;executive&quot;)" class="string">&quot;executive&quot;</span><span class="delimiter">)</span>
+
+    <span class="comment">/**
+     * Counts requests submitted to the exec and pending completion.
+     */</span>
+    <span class="keyword">var</span> <a title="Int" id="26632">counter</a> = <span title="Int(0)" class="int">0</span>
+
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="26634">receive</a> = <a href="#26778" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="26779">request</a> @ Request<span class="delimiter">(</span><a title="Int" id="26780">i</a><span class="delimiter">)</span> =&gt;
+        <a href="#26629" title="=&gt; akka.actor.ActorRef">exec</a> <a href="#26624" title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</a> <a href="#26779" title="untypedfutures.letitcrash.LetItCrashTest.Request">request</a>
+        <a href="#26632" title="(x$1: Int)Unit">counter</a> <span title="(x: Int)Int">+=</span> <span title="Int(1)" class="int">1</span>
+        <a href="../package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;processing &quot;)" class="string">&quot;processing &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26780" title="Int">i</a> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;; pending request counter = &quot;)" class="string">&quot;; pending request counter = &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26632" title="=&gt; Int">counter</a><span class="delimiter">)</span>
+      <span class="keyword">case</span> <span title="Unit">Response</span><span class="delimiter">(</span><a title="Int" id="26788">j</a><span class="delimiter">)</span> =&gt;
+        <a href="#26632" title="(x$1: Int)Unit">counter</a> <span title="(x: Int)Int">-=</span> <span title="Int(1)" class="int">1</span>
+        <a href="../package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;processed &quot;)" class="string">&quot;processed &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26788" title="Int">j</a> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;; pending request counter = &quot;)" class="string">&quot;; pending request counter = &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#26632" title="=&gt; Int">counter</a><span class="delimiter">)</span>
+      <span class="keyword">case</span> <a href="#26751" title="Nothing">Fail</a> =&gt;
+        <span title="object java.lang.Thread">Thread</span>.<span title="(x$1: Long)Unit">sleep</span><span class="delimiter">(</span><span title="Long(1000L)" class="int">1000</span><span class="delimiter">)</span> <span class="comment">// let my mailbox accumulate some messages</span>
+        <span title="Nothing" class="keyword">throw</span> <span title="(x$1: java.lang.String)java.lang.RuntimeException" class="keyword">new</span> <span title="java.lang.RuntimeException">RuntimeException</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Director actor failing.&quot;)" class="string">&quot;Director actor failing.&quot;</span><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+
+  <span class="delimiter">}</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="26625">director</a> = <a href="../package.scala.html#9713" title="(f: =&gt; akka.actor.Actor, name: String)akka.actor.ActorRef">namedThreadActorOf</a><span class="delimiter">(</span><span title="untypedfutures.letitcrash.LetItCrashTest.Director" class="keyword">new</span> <a href="#26624" title="untypedfutures.letitcrash.LetItCrashTest.Director">Director</a>, <span title="java.lang.String(&quot;director&quot;)" class="string">&quot;director&quot;</span><span class="delimiter">)</span>
+
+  <a href="#26625" title="=&gt; akka.actor.ActorRef">director</a> <span title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</span> <a href="#26814" title="(i: Int)untypedfutures.letitcrash.LetItCrashTest.Request">Request</a><span class="delimiter">(</span><span title="Int(1)" class="int">1</span><span class="delimiter">)</span>
+  <a href="#26625" title="=&gt; akka.actor.ActorRef">director</a> <span title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</span> <a href="#26751" title="object untypedfutures.letitcrash.LetItCrashTest.Fail">Fail</a>
+  <a href="#26625" title="=&gt; akka.actor.ActorRef">director</a> <span title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</span> <a href="#26814" title="(i: Int)untypedfutures.letitcrash.LetItCrashTest.Request">Request</a><span class="delimiter">(</span><span title="Int(2)" class="int">2</span><span class="delimiter">)</span>
+
+<span class="delimiter">}</span>
+
+        </pre>
+    </body>
+</html>

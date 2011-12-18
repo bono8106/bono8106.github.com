@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>untypedfutures\ClientActor.scala</title>
+        <script type="text/javascript" src="../jquery-all.js"></script>
+        <script type="text/javascript" src="../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> untypedfutures
+
+<span class="keyword">import</span> akka.actor.Actor
+<span class="keyword">import</span> akka.actor.ActorRef
+
+case <span class="keyword">class</span> <a title="class Go extends java.lang.Object with ScalaObject with Product with Serializable" id="24460">Go</a><a href="#24460" title="ScalaObject" class="delimiter">(</a><a title="akka.actor.ActorRef" id="24457">other</a>: <span title="akka.actor.ActorRef">ActorRef</span><span class="delimiter">)</span>
+
+<span class="keyword">class</span> <a title="class ClientActor extends java.lang.Object with akka.actor.Actor with ScalaObject" id="9659">ClientActor</a> <a href="#9659" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="24115">receive</a> = <a href="#24121" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <span title="Unit">Go</span><span class="delimiter">(</span><a title="akka.actor.ActorRef" id="24122">other</a>: <span title="akka.actor.ActorRef">ActorRef</span><span class="delimiter">)</span> =&gt; 
+        <a href="package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client enter&quot;)" class="string">&quot;Client enter&quot;</span><span class="delimiter">)</span>
+        <span class="keyword">val</span> <a title="akka.dispatch.ActorCompletableFuture" id="24123">future</a> = <a href="#24122" title="akka.actor.ScalaActorRef" id="24362">other</a> <a href="#9659" title="akka.actor.ScalaActorRef" id="24365">?</a> <a title="Int(10)" id="24363" class="int">10</a>
+        <a href="#24123" title="akka.dispatch.ActorCompletableFuture">future</a> <span title="(pf: PartialFunction[Any,Unit])future.type">onResult</span> <a href="#24447" title="Unit" class="delimiter">{</a>
+          <span class="keyword">case</span> <a title="Unit" id="24448">x</a> =&gt;
+            <a href="package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got future result &quot;)" class="string">&quot;Client got future result &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#24448" title="Any">x</a><span class="delimiter">)</span>
+            <a href="#9659" title="=&gt; akka.actor.ScalaActorRef">self</a> <a href="#9659" title="(message: Any)(implicit channel: akka.actor.UntypedChannel)Unit">!</a> <a href="#24448" title="Any">x</a>
+            <span title="object java.lang.Thread">Thread</span>.<span title="(x$1: Long)Unit">sleep</span><span class="delimiter">(</span><span title="Long(1000L)" class="int">1000</span><span class="delimiter">)</span>
+            <a href="package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client future callback done.&quot;)" class="string">&quot;Client future callback done.&quot;</span><span class="delimiter">)</span>
+        <span class="delimiter">}</span>
+        <a href="#24122" title="akka.actor.ActorRef">other</a> <a href="#9659" title="(msg: Any)(implicit sender: akka.actor.UntypedChannel)Unit">!</a> <span title="Int(5)" class="int">5</span>
+        <a href="package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client leave&quot;)" class="string">&quot;Client leave&quot;</span><span class="delimiter">)</span>
+      <span class="keyword">case</span> <a title="Unit" id="24453">other</a> =&gt; <a href="package.scala.html#9712" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got message &quot;)" class="string">&quot;Client got message &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#24453" title="Any">other</a><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+
+<span class="delimiter">}</span>
+        </pre>
+    </body>
+</html>
