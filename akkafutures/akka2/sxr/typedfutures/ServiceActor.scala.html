@@ -16,19 +16,19 @@
 <span class="keyword">import</span> akka.dispatch.Future
 <span class="keyword">import</span> akka.dispatch.KeptPromise
 
-<span class="keyword">trait</span> <a title="trait Service extends java.lang.Object" id="9687">Service</a> <span title="java.lang.Object" class="delimiter">{</span>
-  <span class="keyword">def</span> <a title="(x: Int)akka.dispatch.Future[Int]" id="26336">square</a><span class="delimiter">(</span><a title="Int" id="26358">x</a>: <span title="Int">Int</span><span class="delimiter">)</span>: <span title="akka.dispatch.Future[Int]">Future</span><span class="delimiter">[</span>Int<span class="delimiter">]</span>
+<span class="keyword">trait</span> <a title="trait Service extends java.lang.Object" id="9695">Service</a> <span title="java.lang.Object" class="delimiter">{</span>
+  <span class="keyword">def</span> <a title="(x: Int)akka.dispatch.Future[Int]" id="26490">square</a><span class="delimiter">(</span><a title="Int" id="26512">x</a>: <span title="Int">Int</span><span class="delimiter">)</span>: <span title="akka.dispatch.Future[Int]">Future</span><span class="delimiter">[</span>Int<span class="delimiter">]</span>
 <span class="delimiter">}</span>
 
-<span class="keyword">class</span> <a title="class ServiceActor extends java.lang.Object with typedfutures.Service with Serializable with ScalaObject" id="9688">ServiceActor</a> <a href="#9688" title="ScalaObject" class="keyword">extends</a> <a href="#9687" title="typedfutures.Service">Service</a> <span class="keyword">with</span> <span title="Serializable">Serializable</span> <span class="delimiter">{</span>
+<span class="keyword">class</span> <a title="class ServiceActor extends java.lang.Object with typedfutures.Service with Serializable with ScalaObject" id="9696">ServiceActor</a> <a href="#9696" title="ScalaObject" class="keyword">extends</a> <a href="#9695" title="typedfutures.Service">Service</a> <span class="keyword">with</span> <span title="Serializable">Serializable</span> <span class="delimiter">{</span>
 
-  <span class="keyword">def</span> <a title="(x: Int)Int" id="26396">process</a><span class="delimiter">(</span><a title="Int" id="26414">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <a href="#26414" title="Int">x</a><span title="(x: Int)Int">*</span><a href="#26414" title="Int">x</a>
+  <span class="keyword">def</span> <a title="(x: Int)Int" id="26550">process</a><span class="delimiter">(</span><a title="Int" id="26568">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <a href="#26568" title="Int">x</a><span title="(x: Int)Int">*</span><a href="#26568" title="Int">x</a>
 
-  <span class="keyword">def</span> <a title="(x: Int)akka.dispatch.KeptPromise[Int]" id="26397">square</a><span class="delimiter">(</span><a title="Int" id="26421">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <span class="delimiter">{</span>
-    <a href="package.scala.html#9767" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter&quot;)" class="string">&quot;Service enter&quot;</span><span class="delimiter">)</span>
-    <span class="keyword">val</span> <a title="akka.dispatch.KeptPromise[Int]" id="26424">result</a> = <span title="akka.dispatch.KeptPromise[Int]" class="keyword">new</span> <span title="akka.dispatch.KeptPromise[Int]">KeptPromise</span><span class="delimiter">(</span><span title="(b: Int)Right[Nothing,Int]">Right</span><span class="delimiter">(</span><a href="#26396" title="(x: Int)Int">process</a><span class="delimiter">(</span><a href="#26421" title="Int">x</a><span class="delimiter">)</span><span class="delimiter">)</span><span class="delimiter">)</span>
-    <a href="package.scala.html#9767" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
-    <a href="#26424" title="akka.dispatch.KeptPromise[Int]">result</a>
+  <span class="keyword">def</span> <a title="(x: Int)akka.dispatch.KeptPromise[Int]" id="26551">square</a><span class="delimiter">(</span><a title="Int" id="26575">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <span class="delimiter">{</span>
+    <a href="package.scala.html#9775" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter&quot;)" class="string">&quot;Service enter&quot;</span><span class="delimiter">)</span>
+    <span class="keyword">val</span> <a title="akka.dispatch.KeptPromise[Int]" id="26578">result</a> = <span title="akka.dispatch.KeptPromise[Int]" class="keyword">new</span> <span title="akka.dispatch.KeptPromise[Int]">KeptPromise</span><span class="delimiter">(</span><span title="(b: Int)Right[Nothing,Int]">Right</span><span class="delimiter">(</span><a href="#26550" title="(x: Int)Int">process</a><span class="delimiter">(</span><a href="#26575" title="Int">x</a><span class="delimiter">)</span><span class="delimiter">)</span><span class="delimiter">)</span>
+    <a href="package.scala.html#9775" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
+    <a href="#26578" title="akka.dispatch.KeptPromise[Int]">result</a>
   <span class="delimiter">}</span>
 
 <span class="delimiter">}</span>
