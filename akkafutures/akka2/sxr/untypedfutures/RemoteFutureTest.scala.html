@@ -16,37 +16,60 @@
 <span class="keyword">import</span> akka.actor.ActorSystem
 <span class="keyword">import</span> akka.actor.Props
 <span class="keyword">import</span> com.typesafe.config.ConfigFactory
+<span class="keyword">import</span> akka.remote.Remote
 
-<span class="keyword">object</span> <a title="object untypedfutures.RemoteFutureTest" id="9739">RemoteFutureTest</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+<span class="keyword">object</span> <a title="object untypedfutures.RemoteFutureTest" id="9776">RemoteFutureTest</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
 
-  <span class="keyword">def</span> <a title="=&gt; Unit" id="28505">startService</a> <span class="delimiter">{</span>
-    <span class="keyword">val</span> <a title="com.typesafe.config.Config" id="28510">serviceConfig</a> = <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: java.lang.String)com.typesafe.config.Config">parseString</span><span class="delimiter">(</span><span title="java.lang.String(&quot;\015\012        //    TODO actorSystem.remote.start(\&quot;0.0.0.0\&quot;, 9999)\015\012        akka.actor.deployment {\015\012        /my-service {\015\012        router = round-robin\015\012        nr-of-instances = 3\015\012        }\015\012        }\015\012    &quot;)" class="string">&quot;&quot;&quot;
-        //    TODO actorSystem.remote.start(&quot;0.0.0.0&quot;, 9999)
-        akka.actor.deployment {
-        /my-service {
-        router = round-robin
-        nr-of-instances = 3
-        }
-        }
+  <span class="keyword">def</span> <a title="=&gt; Unit" id="34942">startService</a> <span class="delimiter">{</span>
+    <span class="keyword">val</span> <a title="com.typesafe.config.Config" id="34947">serviceConfig</a> = <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: java.lang.String)com.typesafe.config.Config">parseString</span><span class="delimiter">(</span><span title="java.lang.String(&quot;\015\012      akka.actor.provider = \&quot;akka.remote.RemoteActorRefProvider\&quot;\015\012      akka.cluster.nodename = \&quot;serviceNode\&quot;\015\012      akka.remote.server {\015\012        # The hostname or ip to bind the remoting to,\015\012        # InetAddress.getLocalHost.getHostAddress is used if empty\015\012        hostname = \&quot;localhost\&quot;\015\012\015\012        # The default remote server port clients should connect to.\015\012        # Default is 2552 (AKKA)\015\012        port = 2552\015\012\015\012        # Enable untrusted mode for full security of server managed actors, allows\015\012        # untrusted clients to connect.\015\012        untrusted-mode = on\015\012      }\015\012    &quot;)" class="string">&quot;&quot;&quot;
+      akka.actor.provider = &quot;akka.remote.RemoteActorRefProvider&quot;
+      akka.cluster.nodename = &quot;serviceNode&quot;
+      akka.remote.server {
+        # The hostname or ip to bind the remoting to,
+        # InetAddress.getLocalHost.getHostAddress is used if empty
+        hostname = &quot;localhost&quot;
+
+        # The default remote server port clients should connect to.
+        # Default is 2552 (AKKA)
+        port = 2552
+
+        # Enable untrusted mode for full security of server managed actors, allows
+        # untrusted clients to connect.
+        untrusted-mode = on
+      }
     &quot;&quot;&quot;</span><span class="delimiter">)</span>
-    <span class="comment">// ConfigFactory.load sandwiches customConfig between default reference</span>
-    <span class="comment">// config and default overrides, and then resolves it.</span>
-    <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="28511">serviceSystem</a> = <span title="(name: String, config: com.typesafe.config.Config)akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span title="java.lang.String(&quot;servicesys&quot;)" class="string">&quot;servicesys&quot;</span>, <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: com.typesafe.config.Config)com.typesafe.config.Config">load</span><span class="delimiter">(</span><a href="#28510" title="com.typesafe.config.Config">serviceConfig</a><span class="delimiter">)</span><span class="delimiter">)</span>
+    <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="34948">serviceSystem</a> = <span title="(name: String, config: com.typesafe.config.Config)akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span title="java.lang.String(&quot;serviceSystem&quot;)" class="string">&quot;serviceSystem&quot;</span>, <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: com.typesafe.config.Config)com.typesafe.config.Config">load</span><span class="delimiter">(</span><a href="#34947" title="com.typesafe.config.Config">serviceConfig</a><span class="delimiter">)</span><span class="delimiter">)</span>
 
-    <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="28512">service</a> = <a href="#28511" title="akka.actor.ActorSystem">serviceSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="untypedfutures.ServiceActor" class="keyword">new</span> <a href="ServiceActor.scala.html#9745" title="untypedfutures.ServiceActor">ServiceActor</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;service&quot;)" class="string">&quot;service&quot;</span><span class="delimiter">)</span>
-  <span title="Unit" class="delimiter">}</span>
+    <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="34949">service</a> = <a href="#34948" title="akka.actor.ActorSystem">serviceSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="untypedfutures.ServiceActor" class="keyword">new</span> <a href="ServiceActor.scala.html#9782" title="untypedfutures.ServiceActor">ServiceActor</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;service&quot;)" class="string">&quot;service&quot;</span><span class="delimiter">)</span>
+    <a href="package.scala.html#9827" title="(msg: String)Unit">log</a><span class="delimiter">(</span><a href="#34949" title="akka.actor.ActorRef">service</a>.<span title="=&gt; akka.actor.ActorPath">path</span>.<span title="()java.lang.String">toString</span><span class="delimiter">)</span>
+  <span class="delimiter">}</span>
 
-  <span class="keyword">def</span> <a title="=&gt; Unit" id="28506">startClient</a> <span title="Unit" class="delimiter">{</span>
-<span class="comment">//    TODO val remoteService = Actor.remote.actorFor(&quot;service&quot;, &quot;localhost&quot;, 9999)</span>
-<span class="comment">//    val client = Actor.actorOf(new ClientActor).start</span>
-<span class="comment">//</span>
-<span class="comment">//    client ! Go(remoteService)</span>
+  <span class="keyword">def</span> <a title="=&gt; Unit" id="34943">startClient</a> <span class="delimiter">{</span>
+    <span class="keyword">val</span> <a title="com.typesafe.config.Config" id="34984">clientConfig</a> = <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: java.lang.String)com.typesafe.config.Config">parseString</span><span class="delimiter">(</span><span title="java.lang.String(&quot;\015\012      akka.actor.provider = \&quot;akka.remote.RemoteActorRefProvider\&quot;\015\012      akka.cluster.nodename = \&quot;clientNode\&quot;\015\012      akka.remote.server {\015\012        # The hostname or ip to bind the remoting to,\015\012        # InetAddress.getLocalHost.getHostAddress is used if empty\015\012        hostname = \&quot;\&quot;\015\012\015\012        # The default remote server port clients should connect to.\015\012        # Default is 2552 (AKKA)\015\012        port = 2553\015\012      }\015\012    &quot;)" class="string">&quot;&quot;&quot;
+      akka.actor.provider = &quot;akka.remote.RemoteActorRefProvider&quot;
+      akka.cluster.nodename = &quot;clientNode&quot;
+      akka.remote.server {
+        # The hostname or ip to bind the remoting to,
+        # InetAddress.getLocalHost.getHostAddress is used if empty
+        hostname = &quot;&quot;
+
+        # The default remote server port clients should connect to.
+        # Default is 2552 (AKKA)
+        port = 2553
+      }
+    &quot;&quot;&quot;</span><span class="delimiter">)</span>
+    <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="34985">clientSystem</a> = <span title="(name: String, config: com.typesafe.config.Config)akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span title="java.lang.String(&quot;clientSystem&quot;)" class="string">&quot;clientSystem&quot;</span>, <span title="object com.typesafe.config.ConfigFactory">ConfigFactory</span>.<span title="(x$1: com.typesafe.config.Config)com.typesafe.config.Config">load</span><span class="delimiter">(</span><a href="#34984" title="com.typesafe.config.Config">clientConfig</a><span class="delimiter">)</span><span class="delimiter">)</span>
+
+    <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="34986">remoteService</a> = <a href="#34985" title="akka.actor.ActorSystem">clientSystem</a>.<span title="(path: String)akka.actor.ActorRef">actorFor</span><span class="delimiter">(</span><span title="java.lang.String(&quot;akka://serviceSystem@localhost:2552/user/service&quot;)" class="string">&quot;akka://serviceSystem@localhost:2552/user/service&quot;</span><span class="delimiter">)</span>
+    <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="34987">client</a> = <a href="#34985" title="akka.actor.ActorSystem">clientSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="untypedfutures.ClientActor" class="keyword">new</span> <a href="ClientActor.scala.html#9748" title="untypedfutures.ClientActor">ClientActor</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;client&quot;)" class="string">&quot;client&quot;</span><span class="delimiter">)</span>
+
+    <a href="#34987" title="akka.actor.ScalaActorRef" id="35024">client</a> <a href="#35024" title="akka.actor.ActorRef" id="35026">!</a> <a href="ClientActor.scala.html#33824" title="(other: akka.actor.ActorRef)untypedfutures.Go">Go</a><a title="untypedfutures.Go" id="35025" class="delimiter">(</a><a href="#34986" title="akka.actor.ActorRef">remoteService</a><span class="delimiter">)</span>
   <span class="delimiter">}</span>
 
   <span title="=&gt; Array[String]">args</span> <span title="Unit" class="keyword">match</span> <span class="delimiter">{</span>
-    <span class="keyword">case</span> <a href="#28812" title="Unit">Array</a><span class="delimiter">(</span><span title="java.lang.String(&quot;--client&quot;)" class="string">&quot;--client&quot;</span><span class="delimiter">)</span> =&gt; <a href="#28506" title="=&gt; Unit">startClient</a>
-    <span class="keyword">case</span> <a href="#28818" title="Unit">Array</a><span class="delimiter">(</span><span title="java.lang.String(&quot;--server&quot;)" class="string">&quot;--server&quot;</span><span class="delimiter">)</span> =&gt; <a href="#28505" title="=&gt; Unit">startService</a>
-    <span class="keyword">case</span> <span title="Unit">_</span> =&gt; <a href="#28505" title="=&gt; Unit">startService</a>; <a href="#28506" title="=&gt; Unit">startClient</a>
+    <span class="keyword">case</span> <a href="#35032" title="Unit">Array</a><span class="delimiter">(</span><span title="java.lang.String(&quot;--client&quot;)" class="string">&quot;--client&quot;</span><span class="delimiter">)</span> =&gt; <a href="#34943" title="=&gt; Unit">startClient</a>
+    <span class="keyword">case</span> <a href="#35038" title="Unit">Array</a><span class="delimiter">(</span><span title="java.lang.String(&quot;--server&quot;)" class="string">&quot;--server&quot;</span><span class="delimiter">)</span> =&gt; <a href="#34942" title="=&gt; Unit">startService</a>
+    <span class="keyword">case</span> <span title="Unit">_</span> =&gt; <a href="#34942" title="=&gt; Unit">startService</a>; <a href="#34943" title="=&gt; Unit">startClient</a>
   <span class="delimiter">}</span>
 
 <span class="delimiter">}</span>

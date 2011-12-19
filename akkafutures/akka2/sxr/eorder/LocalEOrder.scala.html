@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>eorder\LocalEOrder.scala</title>
+        <script type="text/javascript" src="../jquery-all.js"></script>
+        <script type="text/javascript" src="../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> eorder
+
+<span class="keyword">import</span> akka.actor._
+
+<span class="keyword">object</span> <a title="object eorder.LocalEOrder" id="9637">LocalEOrder</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="25029">actorSystem</a> = <span title="(name: String)akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span title="java.lang.String(&quot;localSystem&quot;)" class="string">&quot;localSystem&quot;</span><span class="delimiter">)</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="25031">alice</a> = <a href="#25029" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="eorder.Alice" class="keyword">new</span> <a href="Actors.scala.html#9630" title="eorder.Alice">Alice</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;Alice&quot;)" class="string">&quot;Alice&quot;</span><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="25033">bob</a> = <a href="#25029" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="eorder.Bob" class="keyword">new</span> <a href="Actors.scala.html#9631" title="eorder.Bob">Bob</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;Bob&quot;)" class="string">&quot;Bob&quot;</span><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="25035">carol</a> = <a href="#25029" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props, name: String)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="eorder.Carol" class="keyword">new</span> <a href="Actors.scala.html#9632" title="eorder.Carol">Carol</a><span class="delimiter">)</span>, <span title="java.lang.String(&quot;Carol&quot;)" class="string">&quot;Carol&quot;</span><span class="delimiter">)</span>
+
+  <a href="Actors.scala.html#9628" title="object eorder.Actors">Actors</a>.<a href="Actors.scala.html#11033" title="(alice: akka.actor.ActorRef, bob: akka.actor.ActorRef, carol: akka.actor.ActorRef)Unit">run</a><span class="delimiter">(</span><a href="#25031" title="=&gt; akka.actor.ActorRef">alice</a>, <a href="#25033" title="=&gt; akka.actor.ActorRef">bob</a>, <a href="#25035" title="=&gt; akka.actor.ActorRef">carol</a><span class="delimiter">)</span>
+
+<span class="delimiter">}</span>
+        </pre>
+    </body>
+</html>

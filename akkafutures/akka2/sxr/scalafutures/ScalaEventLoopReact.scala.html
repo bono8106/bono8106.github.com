@@ -14,25 +14,25 @@
 
 <span class="keyword">import</span> scala.actors.<span title="object scala.actors.Actor">Actor</span>._
 
-<span class="keyword">object</span> <a title="object scalafutures.ScalaEventLoopReact" id="9626">ScalaEventLoopReact</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+<span class="keyword">object</span> <a title="object scalafutures.ScalaEventLoopReact" id="9652">ScalaEventLoopReact</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
 
-  <span class="keyword">val</span> <a title="scala.actors.Actor" id="10525">testActor</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
-    <span class="keyword">lazy</span> <span class="keyword">val</span> <a title="PartialFunction[Any,Unit]" id="10532">handler</a>: <span title="PartialFunction[Any,Unit]">PartialFunction</span><span class="delimiter">[</span>Any, Unit<span class="delimiter">]</span> = <a href="#10585" title="Unit" class="delimiter">{</a>
-      <span class="keyword">case</span> <a title="Unit" id="10586">message</a>: <span title="String">String</span> =&gt;
-        <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Message = &quot;)" class="string">&quot;Message = &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#10586" title="String">message</a><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="scala.actors.Actor" id="30812">testActor</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
+    <span class="keyword">lazy</span> <span class="keyword">val</span> <a title="PartialFunction[Any,Unit]" id="30816">handler</a>: <span title="PartialFunction[Any,Unit]">PartialFunction</span><span class="delimiter">[</span>Any, Unit<span class="delimiter">]</span> = <a href="#30818" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="30819">message</a>: <span title="String">String</span> =&gt;
+        <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Message = &quot;)" class="string">&quot;Message = &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#30819" title="String">message</a><span class="delimiter">)</span>
         <span title="=&gt; scala.actors.Actor">self</span> <span title="(msg: Any)Unit">!</span> <span title="Int(42)" class="int">42</span>
         <span title="=&gt; scala.actors.Actor">self</span> <span title="(body: =&gt; Nothing)java.lang.Object with scala.actors.Actor.Body[Nothing]">mkBody</span> <span class="delimiter">{</span>
-          <span title="(f: PartialFunction[Any,Unit])Nothing">react</span> <a href="#13076" title="Unit" class="delimiter">{</a>
-            <span class="keyword">case</span> <a title="Unit" id="13077">answer</a>: <span title="Int">Int</span> =&gt;
-              <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;the answer to the universe and everything is &quot;)" class="string">&quot;the answer to the universe and everything is &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#13077" title="Int">answer</a><span class="delimiter">)</span>
+          <span title="(f: PartialFunction[Any,Unit])Nothing">react</span> <a href="#31026" title="Unit" class="delimiter">{</a>
+            <span class="keyword">case</span> <a title="Unit" id="31027">answer</a>: <span title="Int">Int</span> =&gt;
+              <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;the answer to the universe and everything is &quot;)" class="string">&quot;the answer to the universe and everything is &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#31027" title="Int">answer</a><span class="delimiter">)</span>
           <span class="delimiter">}</span>
-        <span class="delimiter">}</span> <span title="(other: =&gt; Nothing)Unit">andThen</span> <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span><span class="delimiter">(</span><a href="#10531" title="=&gt; PartialFunction[Any,Unit]">handler</a><span class="delimiter">)</span>
+        <span class="delimiter">}</span> <span title="(other: =&gt; Nothing)Unit">andThen</span> <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span><span class="delimiter">(</span><a href="#30815" title="=&gt; PartialFunction[Any,Unit]">handler</a><span class="delimiter">)</span>
     <span class="delimiter">}</span>
-    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span><span class="delimiter">(</span><a href="#10531" title="=&gt; PartialFunction[Any,Unit]">handler</a><span class="delimiter">)</span>
+    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span><span class="delimiter">(</span><a href="#30815" title="=&gt; PartialFunction[Any,Unit]">handler</a><span class="delimiter">)</span>
   <span class="delimiter">}</span>
 
-  <a href="#10525" title="=&gt; scala.actors.Actor">testActor</a> <span title="(msg: Any)Unit">!</span> <span title="java.lang.String(&quot;Hello&quot;)" class="string">&quot;Hello&quot;</span>
-  <a href="#10525" title="=&gt; scala.actors.Actor">testActor</a> <span title="(msg: Any)Unit">!</span> <span title="java.lang.String(&quot;World&quot;)" class="string">&quot;World&quot;</span>
+  <a href="#30812" title="=&gt; scala.actors.Actor">testActor</a> <span title="(msg: Any)Unit">!</span> <span title="java.lang.String(&quot;Hello&quot;)" class="string">&quot;Hello&quot;</span>
+  <a href="#30812" title="=&gt; scala.actors.Actor">testActor</a> <span title="(msg: Any)Unit">!</span> <span title="java.lang.String(&quot;World&quot;)" class="string">&quot;World&quot;</span>
 
 <span class="delimiter">}</span>
         </pre>
