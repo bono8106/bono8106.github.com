@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>tellorask\SilentFailureWithAsk.scala</title>
+        <script type="text/javascript" src="../jquery-all.js"></script>
+        <script type="text/javascript" src="../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> tellorask
+
+<span class="keyword">import</span> akka.actor.Actor
+<span class="keyword">import</span> akka.actor.ActorRef
+<span class="keyword">import</span> akka.actor.ActorSystem
+<span class="keyword">import</span> akka.actor.Props
+<span class="keyword">import</span> akka.dispatch.Future
+
+<span class="keyword">object</span> <a title="object tellorask.SilentFailureWithAsk" id="9735">SilentFailureWithAsk</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="32931">actorSystem</a> = <span title="()akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span class="delimiter">)</span>
+
+  <span class="keyword">class</span> <a title="class Service extends java.lang.Object with akka.actor.Actor with ScalaObject" id="32933">Service</a> <a href="#32933" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="32962">receive</a> = <a href="#32992" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Nothing" id="32993">x</a>: <span title="Int">Int</span> =&gt; <span title="Nothing" class="keyword">throw</span> <span title="(x$1: java.lang.String)java.lang.Exception" class="keyword">new</span> <span title="java.lang.Exception">Exception</span><span class="delimiter">(</span><span title="java.lang.String(&quot;ask failed&quot;)" class="string">&quot;ask failed&quot;</span><span class="delimiter">)</span>
+    <span class="delimiter">}</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">class</span> <a title="class Client extends java.lang.Object with akka.actor.Actor with ScalaObject" id="32934">Client</a> <a href="#32934" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="32982">receive</a> = <a href="#33017" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="33018">service</a>: <span title="akka.actor.ActorRef">ActorRef</span> =&gt;
+        <span class="comment">// ActorRef.ask failure</span>
+        <span class="keyword">implicit</span> <span class="keyword">def</span> <a title="=&gt; akka.util.Timeout" id="33019">timeout</a> = <a href="#32931" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="=&gt; akka.actor.ActorSystem.Settings">settings</span>.<span title="=&gt; akka.util.Timeout">ActorTimeout</span>
+        <a href="#33018" title="implicit akka.actor.package.actorRef2Scala : (ref: akka.actor.ActorRef)akka.actor.ScalaActorRef">service</a> <a href="#33019" title="(message: Any)(implicit timeout: akka.util.Timeout)akka.dispatch.Future[Any]">?</a> <span title="Int(42)" class="int">42</span> <span title="(func: Either[java.lang.Throwable,Any] =&gt; Unit)akka.dispatch.Future[Any]">onComplete</span> <span class="delimiter">{</span> <a title="Either[java.lang.Throwable,Any]" id="33213">result</a> =&gt; <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Ask completed with &quot;)" class="string">&quot;Ask completed with &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#33213" title="Either[java.lang.Throwable,Any]">result</a><span class="delimiter">)</span> <span class="delimiter">}</span>
+
+        <span class="comment">// Future.apply failure</span>
+        <span class="keyword">implicit</span> <span class="keyword">def</span> <a title="=&gt; akka.dispatch.MessageDispatcher" id="33020">dispatcher</a> = <a href="#32931" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="=&gt; akka.dispatch.MessageDispatcher">dispatcher</span>
+        <span title="(body: =&gt; Nothing)(implicit dispatcher: akka.dispatch.MessageDispatcher)akka.dispatch.Future[Nothing]">Future</span> <a href="#33020" title="=&gt; akka.dispatch.MessageDispatcher" class="delimiter">{</a> <span title="Nothing" class="keyword">throw</span> <span title="(x$1: java.lang.String)java.lang.Exception" class="keyword">new</span> <span title="java.lang.Exception">Exception</span><span class="delimiter">(</span><span title="java.lang.String(&quot;future failed&quot;)" class="string">&quot;future failed&quot;</span><span class="delimiter">)</span> <span class="delimiter">}</span> <span title="(func: Either[java.lang.Throwable,Nothing] =&gt; Unit)akka.dispatch.Future[Nothing]">onComplete</span> <span class="delimiter">{</span> <a title="Either[java.lang.Throwable,Nothing]" id="33291">result</a> =&gt; <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Future completed with &quot;)" class="string">&quot;Future completed with &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#33291" title="Either[java.lang.Throwable,Nothing]">result</a><span class="delimiter">)</span> <span class="delimiter">}</span>
+    <span class="delimiter">}</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="32935">service</a> = <a href="#32931" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="tellorask.SilentFailureWithAsk.Service" class="keyword">new</span> <a href="#32933" title="tellorask.SilentFailureWithAsk.Service">Service</a><span class="delimiter">)</span><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="akka.actor.ActorRef" id="32937">client</a> = <a href="#32931" title="=&gt; akka.actor.ActorSystem">actorSystem</a>.<span title="(props: akka.actor.Props)akka.actor.ActorRef">actorOf</span><span class="delimiter">(</span><span title="(creator: =&gt; akka.actor.Actor)akka.actor.Props">Props</span><span class="delimiter">(</span><span title="tellorask.SilentFailureWithAsk.Client" class="keyword">new</span> <a href="#32934" title="tellorask.SilentFailureWithAsk.Client">Client</a><span class="delimiter">)</span><span class="delimiter">)</span>
+
+  <a href="#32937" title="akka.actor.ScalaActorRef" id="33297">client</a> <a href="#33297" title="akka.actor.ActorRef" id="33299">!</a> <a href="#32935" title="akka.actor.ActorRef" id="33298">service</a>
+
+<span class="delimiter">}</span>
+        </pre>
+    </body>
+</html>

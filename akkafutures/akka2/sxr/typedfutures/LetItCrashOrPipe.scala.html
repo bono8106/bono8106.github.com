@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+        <title>typedfutures\LetItCrashOrPipe.scala</title>
+        <script type="text/javascript" src="../jquery-all.js"></script>
+        <script type="text/javascript" src="../linked.js"></script>
+        <link rel="stylesheet" type="text/css" href="../style.css" title="Style"></link>
+    </head>
+    <body>
+        <pre>
+<span class="keyword">package</span> typedfutures
+
+<span class="keyword">import</span> akka.actor._
+<span class="keyword">import</span> akka.dispatch.Future
+
+<span class="keyword">object</span> <a title="object typedfutures.LetItCrashOrPipe" id="9750">LetItCrashOrPipe</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
+
+  <span class="keyword">trait</span> <a title="trait PipeOrCrash extends java.lang.Object" id="33521">PipeOrCrash</a> <span title="java.lang.Object" class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; akka.dispatch.Future[Any]" id="33727">pipe</a>: <span title="akka.dispatch.Future[Any]">Future</span><span class="delimiter">[</span>Any<span class="delimiter">]</span>
+    <span class="keyword">def</span> <a title="=&gt; Unit" id="33728">crash</a>: <span title="Unit">Unit</span>
+
+    <span class="keyword">def</span> <a title="=&gt; Unit" id="33729">go</a>: <span title="Unit">Unit</span>
+  <span class="delimiter">}</span>
+
+  <span class="keyword">class</span> <a title="class PipeOrCrashActor extends java.lang.Object with typedfutures.LetItCrashOrPipe.PipeOrCrash with ScalaObject" id="33522">PipeOrCrashActor</a> <a href="#33522" title="ScalaObject" class="keyword">extends</a> <a href="#33521" title="typedfutures.LetItCrashOrPipe.PipeOrCrash">PipeOrCrash</a> <span class="delimiter">{</span>
+    <span class="keyword">def</span> <a title="=&gt; akka.dispatch.Future[Any]" id="33731">pipe</a>: <span title="akka.dispatch.Future[Any]">Future</span><span class="delimiter">[</span>Any<span class="delimiter">]</span> = <span class="delimiter">{</span> <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;this=&quot;)" class="string">&quot;this=&quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#33522" title="typedfutures.LetItCrashOrPipe.PipeOrCrashActor" class="keyword">this</a><span class="delimiter">)</span>; <span title="Nothing" class="keyword">throw</span> <span title="(x$1: java.lang.String)java.lang.Exception" class="keyword">new</span> <span title="java.lang.Exception">Exception</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Exception piped through future&quot;)" class="string">&quot;Exception piped through future&quot;</span><span class="delimiter">)</span> <span class="delimiter">}</span>
+    <span class="keyword">def</span> <a title="=&gt; Unit" id="33732">crash</a>: <span title="Unit">Unit</span> = <span class="delimiter">{</span> <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;this=&quot;)" class="string">&quot;this=&quot;</span><span title="(x$1: Any)java.lang.String">+</span><a href="#33522" title="typedfutures.LetItCrashOrPipe.PipeOrCrashActor" class="keyword">this</a><span class="delimiter">)</span>; <span title="Nothing" class="keyword">throw</span> <span title="(x$1: java.lang.String)java.lang.Exception" class="keyword">new</span> <span title="java.lang.Exception">Exception</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Exception piped to supervisor (let-it-crash)&quot;)" class="string">&quot;Exception piped to supervisor (let-it-crash)&quot;</span><span class="delimiter">)</span> <span class="delimiter">}</span>
+    <span class="keyword">def</span> <a title="=&gt; Unit" id="33733">go</a> <span class="delimiter">{</span>
+      <span class="keyword">val</span> <a title="typedfutures.LetItCrashOrPipe.PipeOrCrash" id="33944">self</a> = <span title="object akka.actor.TypedActor">TypedActor</span>.<span title="[T &lt;: AnyRef]=&gt; T">self</span><span title="typedfutures.LetItCrashOrPipe.PipeOrCrash" class="delimiter">[</span><a href="#33521" title="typedfutures.LetItCrashOrPipe.PipeOrCrash">PipeOrCrash</a><span class="delimiter">]</span>
+      <a href="#33944" title="typedfutures.LetItCrashOrPipe.PipeOrCrash">self</a>.<a href="#33727" title="=&gt; akka.dispatch.Future[Any]">pipe</a> <span title="(func: Either[java.lang.Throwable,Any] =&gt; Unit)akka.dispatch.Future[Any]">onComplete</span> <span class="delimiter">{</span> <a title="Either[java.lang.Throwable,Any]" id="33955">result</a> =&gt; <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;Future completed with &quot;)" class="string">&quot;Future completed with &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#33955" title="Either[java.lang.Throwable,Any]">result</a><span class="delimiter">)</span> <span class="delimiter">}</span>
+      <a href="#33944" title="typedfutures.LetItCrashOrPipe.PipeOrCrash">self</a>.<a href="#33728" title="=&gt; Unit">crash</a>
+    <span class="delimiter">}</span>
+
+  <span class="delimiter">}</span>
+
+  <span class="keyword">val</span> <a title="akka.actor.ActorSystem" id="33523">actorSystem</a> = <span title="()akka.actor.ActorSystem">ActorSystem</span><span class="delimiter">(</span><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="akka.actor.TypedActorExtension" id="33525">typedActors</a> = <span title="(system: akka.actor.ActorSystem)akka.actor.TypedActorExtension">TypedActor</span><span class="delimiter">(</span><a href="#33523" title="=&gt; akka.actor.ActorSystem">actorSystem</a><span class="delimiter">)</span>
+
+  <span class="keyword">val</span> <a title="typedfutures.LetItCrashOrPipe.PipeOrCrash" id="33527">actor</a> = <a href="#33525" title="=&gt; akka.actor.TypedActorExtension">typedActors</a>.<span title="(interface: Class[typedfutures.LetItCrashOrPipe.PipeOrCrash], impl: Class[typedfutures.LetItCrashOrPipe.PipeOrCrashActor], props: akka.actor.Props)typedfutures.LetItCrashOrPipe.PipeOrCrash">typedActorOf</span><span class="delimiter">(</span>classOf<span title="java.lang.Class[typedfutures.LetItCrashOrPipe.PipeOrCrash](classOf[typedfutures.LetItCrashOrPipe$$PipeOrCrash])" class="delimiter">[</span>PipeOrCrash<span class="delimiter">]</span>, classOf<span title="java.lang.Class[typedfutures.LetItCrashOrPipe.PipeOrCrashActor](classOf[typedfutures.LetItCrashOrPipe$$PipeOrCrashActor])" class="delimiter">[</span>PipeOrCrashActor<span class="delimiter">]</span>, <span title="()akka.actor.Props">Props</span><span class="delimiter">(</span><span class="delimiter">)</span><span class="delimiter">)</span>
+
+  <a href="#33527" title="=&gt; typedfutures.LetItCrashOrPipe.PipeOrCrash">actor</a>.<a href="#33729" title="=&gt; Unit">go</a>
+
+<span class="delimiter">}</span>
+        </pre>
+    </body>
+</html>

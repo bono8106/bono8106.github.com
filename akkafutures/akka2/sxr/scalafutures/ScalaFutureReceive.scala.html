@@ -17,39 +17,39 @@
 
 <span class="keyword">object</span> <a title="object scalafutures.ScalaFutureReceive" id="9691">ScalaFutureReceive</a> <span title="ScalaObject" class="keyword">extends</span> <span title="App">App</span> <span class="delimiter">{</span>
 
-  <span class="keyword">def</span> <a title="(msg: Any)Unit" id="32184">log</a><span class="delimiter">(</span><a title="Any" id="32193">msg</a>: <span title="Any">Any</span><span class="delimiter">)</span> <span class="delimiter">{</span>
-    <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;[&quot;)" class="string">&quot;[&quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="object java.lang.Thread">Thread</span>.<span title="()java.lang.Thread">currentThread</span>.<span title="()java.lang.String">getName</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;] &quot;)" class="string">&quot;] &quot;</span> <span title="(x$1: Any)java.lang.String">+</span>  <span title="java.lang.String(&quot;{&quot;)" class="string">&quot;{&quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="object scala.actors.Actor">Actor</span>.<span title="=&gt; scala.actors.Actor">self</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;} &quot;)" class="string">&quot;} &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32193" title="Any">msg</a><span class="delimiter">)</span>
+  <span class="keyword">def</span> <a title="(msg: Any)Unit" id="32206">log</a><span class="delimiter">(</span><a title="Any" id="32215">msg</a>: <span title="Any">Any</span><span class="delimiter">)</span> <span class="delimiter">{</span>
+    <span title="(x: Any)Unit">println</span><span class="delimiter">(</span><span title="java.lang.String(&quot;[&quot;)" class="string">&quot;[&quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="object java.lang.Thread">Thread</span>.<span title="()java.lang.Thread">currentThread</span>.<span title="()java.lang.String">getName</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;] &quot;)" class="string">&quot;] &quot;</span> <span title="(x$1: Any)java.lang.String">+</span>  <span title="java.lang.String(&quot;{&quot;)" class="string">&quot;{&quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="object scala.actors.Actor">Actor</span>.<span title="=&gt; scala.actors.Actor">self</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="java.lang.String(&quot;} &quot;)" class="string">&quot;} &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32215" title="Any">msg</a><span class="delimiter">)</span>
   <span class="delimiter">}</span>
 
-  <span class="keyword">val</span> <a title="scala.actors.Actor" id="32185">service</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
-    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span> <a href="#32191" title="Unit" class="delimiter">{</a>
-      <span class="keyword">case</span> <a title="Unit" id="32192">x</a>: <span title="Int">Int</span> =&gt;
-        <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter with sender &quot;)" class="string">&quot;Service enter with sender &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="=&gt; scala.actors.OutputChannel[Any]">sender</span><span class="delimiter">)</span>
-        <span title="=&gt; scala.actors.OutputChannel[Any]">sender</span> <span title="(msg: Any)Unit">!</span> <span class="delimiter">(</span><a href="#32192" title="Int">x</a> <span title="(x: Int)Int">*</span> <a href="#32192" title="Int">x</a><span class="delimiter">)</span>
+  <span class="keyword">val</span> <a title="scala.actors.Actor" id="32207">service</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
+    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span> <a href="#32213" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="32214">x</a>: <span title="Int">Int</span> =&gt;
+        <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter with sender &quot;)" class="string">&quot;Service enter with sender &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="=&gt; scala.actors.OutputChannel[Any]">sender</span><span class="delimiter">)</span>
+        <span title="=&gt; scala.actors.OutputChannel[Any]">sender</span> <span title="(msg: Any)Unit">!</span> <span class="delimiter">(</span><a href="#32214" title="Int">x</a> <span title="(x: Int)Int">*</span> <a href="#32214" title="Int">x</a><span class="delimiter">)</span>
         <span title="object java.lang.Thread">Thread</span>.<span title="(x$1: Long)Unit">sleep</span><span class="delimiter">(</span><span title="Long(1000L)" class="int">1000</span><span class="delimiter">)</span>
-        <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
+        <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
     <span class="delimiter">}</span>
   <span class="delimiter">}</span>
 
-  <span class="keyword">val</span> <a title="scala.actors.Actor" id="32187">client</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
-    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span> <a href="#32203" title="Unit" class="delimiter">{</a>
-      <span class="keyword">case</span> <a title="Unit" id="32204">serviceProvider</a>: <span title="scala.actors.Actor">Actor</span> =&gt;
-        <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client enter &quot;)" class="string">&quot;Client enter &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="=&gt; scala.actors.Actor">self</span><span class="delimiter">)</span>
-        <span class="keyword">val</span> <a title="serviceProvider.Future[Any]" id="32205">future</a> = <a href="#32204" title="scala.actors.Actor">serviceProvider</a> <span title="(msg: Any)serviceProvider.Future[Any]">!!</span> <span title="Int(42)" class="int">42</span>
-        <a href="#32205" title="serviceProvider.Future[Any]">future</a>.<span title="=&gt; scala.actors.InputChannel[Any]">inputChannel</span> <span title="(f: PartialFunction[Any,Unit])Unit">receive</span> <a href="#32225" title="Unit" class="delimiter">{</a>
-          <span class="keyword">case</span> <a title="Unit" id="32226">response</a>: <span title="Int">Int</span> =&gt;
-            <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got future result &quot;)" class="string">&quot;Client got future result &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32226" title="Int">response</a><span class="delimiter">)</span>
-            <span title="=&gt; scala.actors.Actor">self</span> <span title="(msg: Any)Unit">!</span> <a href="#32226" title="Int">response</a>
+  <span class="keyword">val</span> <a title="scala.actors.Actor" id="32209">client</a> = <span title="(body: =&gt; Unit)scala.actors.Actor">actor</span> <span class="delimiter">{</span>
+    <span title="(f: PartialFunction[Any,Unit])Nothing">eventloop</span> <a href="#32225" title="Unit" class="delimiter">{</a>
+      <span class="keyword">case</span> <a title="Unit" id="32226">serviceProvider</a>: <span title="scala.actors.Actor">Actor</span> =&gt;
+        <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client enter &quot;)" class="string">&quot;Client enter &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <span title="=&gt; scala.actors.Actor">self</span><span class="delimiter">)</span>
+        <span class="keyword">val</span> <a title="serviceProvider.Future[Any]" id="32227">future</a> = <a href="#32226" title="scala.actors.Actor">serviceProvider</a> <span title="(msg: Any)serviceProvider.Future[Any]">!!</span> <span title="Int(42)" class="int">42</span>
+        <a href="#32227" title="serviceProvider.Future[Any]">future</a>.<span title="=&gt; scala.actors.InputChannel[Any]">inputChannel</span> <span title="(f: PartialFunction[Any,Unit])Unit">receive</span> <a href="#32247" title="Unit" class="delimiter">{</a>
+          <span class="keyword">case</span> <a title="Unit" id="32248">response</a>: <span title="Int">Int</span> =&gt;
+            <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got future result &quot;)" class="string">&quot;Client got future result &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32248" title="Int">response</a><span class="delimiter">)</span>
+            <span title="=&gt; scala.actors.Actor">self</span> <span title="(msg: Any)Unit">!</span> <a href="#32248" title="Int">response</a>
             <span title="object java.lang.Thread">Thread</span>.<span title="(x$1: Long)Unit">sleep</span><span class="delimiter">(</span><span title="Long(1000L)" class="int">1000</span><span class="delimiter">)</span>
-            <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client future receive done&quot;)" class="string">&quot;Client future receive done&quot;</span><span class="delimiter">)</span>
+            <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client future receive done&quot;)" class="string">&quot;Client future receive done&quot;</span><span class="delimiter">)</span>
         <span class="delimiter">}</span>
-        <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client leave&quot;)" class="string">&quot;Client leave&quot;</span><span class="delimiter">)</span>
-      <span class="keyword">case</span> <a title="Unit" id="32234">response</a>: <span title="Int">Int</span> =&gt;
-        <a href="#32184" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got back &quot;)" class="string">&quot;Client got back &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32234" title="Int">response</a><span class="delimiter">)</span>
+        <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client leave&quot;)" class="string">&quot;Client leave&quot;</span><span class="delimiter">)</span>
+      <span class="keyword">case</span> <a title="Unit" id="32256">response</a>: <span title="Int">Int</span> =&gt;
+        <a href="#32206" title="(msg: Any)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Client got back &quot;)" class="string">&quot;Client got back &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#32256" title="Int">response</a><span class="delimiter">)</span>
     <span class="delimiter">}</span>
   <span class="delimiter">}</span>
 
-  <a href="#32187" title="=&gt; scala.actors.Actor">client</a> <span title="(msg: Any)Unit">!</span> <a href="#32185" title="=&gt; scala.actors.Actor">service</a>
+  <a href="#32209" title="=&gt; scala.actors.Actor">client</a> <span title="(msg: Any)Unit">!</span> <a href="#32207" title="=&gt; scala.actors.Actor">service</a>
 
 <span class="delimiter">}</span>
         </pre>

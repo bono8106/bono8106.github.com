@@ -14,17 +14,17 @@
 
 <span class="keyword">import</span> akka.actor.Actor
 
-<span class="keyword">class</span> <a title="class ServiceActor extends java.lang.Object with akka.actor.Actor with ScalaObject" id="9782">ServiceActor</a> <a href="#9782" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
+<span class="keyword">class</span> <a title="class ServiceActor extends java.lang.Object with akka.actor.Actor with ScalaObject" id="9814">ServiceActor</a> <a href="#9814" title="ScalaObject" class="keyword">extends</a> <span title="akka.actor.Actor">Actor</span> <span class="delimiter">{</span>
 
-  <span class="keyword">def</span> <a title="(x: Int)Int" id="34154">process</a><span class="delimiter">(</span><a title="Int" id="35048">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <a href="#35048" title="Int">x</a><span title="(x: Int)Int">*</span><a href="#35048" title="Int">x</a>
+  <span class="keyword">def</span> <a title="(x: Int)Int" id="34787">process</a><span class="delimiter">(</span><a title="Int" id="35681">x</a>: <span title="Int">Int</span><span class="delimiter">)</span> = <a href="#35681" title="Int">x</a><span title="(x: Int)Int">*</span><a href="#35681" title="Int">x</a>
 
-  <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="34155">receive</a> = <a href="#35059" title="Unit" class="delimiter">{</a>
-    <span class="keyword">case</span> <a title="Unit" id="35060">x</a>: <span title="Int">Int</span> =&gt;
-      <a href="package.scala.html#9827" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter&quot;)" class="string">&quot;Service enter&quot;</span><span class="delimiter">)</span>
-      <a href="#9782" title="implicit akka.actor.package.actorRef2Scala : (ref: akka.actor.ActorRef)akka.actor.ScalaActorRef">sender</a> <a href="#9782" title="(message: Any)(implicit sender: akka.actor.ActorRef)Unit">!</a> <a href="#34154" title="(x: Int)Int">process</a><span class="delimiter">(</span><a href="#35060" title="Int">x</a><span class="delimiter">)</span>
-      <a href="package.scala.html#9827" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
-    <span class="keyword">case</span> <a title="Unit" id="35065">y</a> =&gt;
-      <a href="package.scala.html#9827" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service unkown message &quot;)" class="string">&quot;Service unkown message &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#35065" title="Any">y</a><span class="delimiter">)</span>
+  <span class="keyword">def</span> <a title="=&gt; PartialFunction[Any,Unit]" id="34788">receive</a> = <a href="#35692" title="Unit" class="delimiter">{</a>
+    <span class="keyword">case</span> <a title="Unit" id="35693">x</a>: <span title="Int">Int</span> =&gt;
+      <a href="package.scala.html#9859" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service enter&quot;)" class="string">&quot;Service enter&quot;</span><span class="delimiter">)</span>
+      <a href="#9814" title="implicit akka.actor.package.actorRef2Scala : (ref: akka.actor.ActorRef)akka.actor.ScalaActorRef">sender</a> <a href="#9814" title="(message: Any)(implicit sender: akka.actor.ActorRef)Unit">!</a> <a href="#34787" title="(x: Int)Int">process</a><span class="delimiter">(</span><a href="#35693" title="Int">x</a><span class="delimiter">)</span>
+      <a href="package.scala.html#9859" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service leave&quot;)" class="string">&quot;Service leave&quot;</span><span class="delimiter">)</span>
+    <span class="keyword">case</span> <a title="Unit" id="35698">y</a> =&gt;
+      <a href="package.scala.html#9859" title="(msg: String)Unit">log</a><span class="delimiter">(</span><span title="java.lang.String(&quot;Service unkown message &quot;)" class="string">&quot;Service unkown message &quot;</span> <span title="(x$1: Any)java.lang.String">+</span> <a href="#35698" title="Any">y</a><span class="delimiter">)</span>
   <span class="delimiter">}</span>
 
 <span class="delimiter">}</span>
